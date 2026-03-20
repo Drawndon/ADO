@@ -17,18 +17,29 @@ namespace ADO
 														"Initial Catalog=Movies_PV_521;Integrated Security=True;Connect Timeout=30;Encrypt=False;" +
 														"TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 			Connector connector = new Connector(connection_string);
+
+			connector.Insert("INSERT Directors (/*director_id*/,first_name, last_name) VALUES (/*GetNextPrimaryKey*/, N'Guy', N'Richie');");
+
+			Console.WriteLine($"PK макс:\t{connector.GetMaxPrimaryKey("Directors")}");
+
 			/*Из таблицы Directors
 			string cmd = "SELECT * FROM Directors";
 			Из таблицы Movies
 			string cmd = "SELECT * FROM Movies";*/
 
-			string cmd = "SELECT movie_id, title, release_date, first_name, last_name FROM Movies, Directors WHERE director = director_id ";
+			//string cmd = "SELECT movie_id, title, release_date, first_name, last_name FROM Movies, Directors WHERE director = director_id ";
 
-			connector.Select(cmd);
-			Console.WriteLine($"Количество записей: {connector.Scalar("SELECT COUNT(*) FROM Movies")}");
-
-			connector.Select("SELECT * FROM Directors");
+			//connector.Select(cmd);
+			connector.Select("*", "Directors");
 			Console.WriteLine($"Количество записей: {connector.Scalar("SELECT COUNT(*) FROM Directors")}");
+
+			connector.Select
+				(
+				"title, release_date, first_name, last_name",
+				"Movies, Directors",
+				"director = director_id"
+				);
+			Console.WriteLine($"Количество записей: {connector.Scalar("SELECT COUNT(*) FROM Movies")}");
 
 			//command.CommandText = "SELECT COUNT(*) FROM Movies";
 			//command.ExecuteScalar() возвращает одно значение
