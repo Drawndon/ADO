@@ -18,7 +18,7 @@ namespace ADO
 														"TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 			Connector connector = new Connector(connection_string);
 
-			connector.Insert("INSERT Directors (/*director_id*/,first_name, last_name) VALUES (/*GetNextPrimaryKey*/, N'Guy', N'Richie');");
+			connector.Insert("INSERT Directors (first_name, last_name) VALUES (N'Guy', N'Richie');");
 
 			Console.WriteLine($"PK макс:\t{connector.GetMaxPrimaryKey("Directors")}");
 
