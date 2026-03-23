@@ -59,7 +59,19 @@ namespace ADO
 			return result;
 		}
 
-		
+		public string GetPrimaryKeyName(string table)
+		{
+			connection.Open();
+			string cmd = $"SELECT * FROM {table}";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			SqlDataReader reader = command.ExecuteReader();
+			string pkName = reader.GetName(0);
+			reader.Close();
+			connection.Close();
+			return pkName;
+		}
+
+
 		public int GetMaxPrimaryKey(string table)
 		{
 			string cmd = $"SELECT * FROM {table}";
