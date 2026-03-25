@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data.SqlClient;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
+//using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
-namespace ADO
+namespace DBTools
 {
-	internal class Connector
+	public class Connector
 	{
 		string connection_string;
 		SqlConnection connection;
@@ -60,7 +60,7 @@ namespace ADO
 			return result;
 		}
 
-		
+
 		public int GetMaxPrimaryKey(string table)
 		{
 			string cmd = $"SELECT * FROM {table}";
@@ -85,12 +85,12 @@ namespace ADO
 FROM	INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE TABLE_NAME = N'{table}'
 AND CONSTRAINT_NAME LIKE N'PK_%' ";
-		return (string)Scalar(cmd);		
+			return (string)Scalar(cmd);
 		}
-		
+
 		public void Insert(string cmd)
 		{
-			SqlCommand command = new SqlCommand (cmd, connection);
+			SqlCommand command = new SqlCommand(cmd, connection);
 			connection.Open();
 			try
 			{
@@ -114,13 +114,13 @@ AND CONSTRAINT_NAME LIKE N'PK_%' ";
 			string[] s_fields = fields.Split(',');
 			string[] s_values = values.Split(',');
 			string parsed_values = $"N'{s_values[0]}',";
-			for (int i=1; i < s_fields.Length; i++)
+			for (int i = 1; i < s_fields.Length; i++)
 			{
 				condition += $" {s_fields[i]} = N'{s_values[i]}' ";
 				parsed_values += s_values[i][0] != 'N' && s_values[i][1] != '\'' ? $"N'{s_values[i]}' " : s_values[i];
 				if (i != s_fields.Length - 1)
-				{ 
-					condition += "AND" ;
+				{
+					condition += "AND";
 					parsed_values += ",";
 				}
 			}
